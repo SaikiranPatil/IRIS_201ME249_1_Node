@@ -20,7 +20,7 @@ app.use(bodyparser.urlencoded({extended:true}));
 
 // import routes
 const userRoutes = require('./server/routes/userRoutes');
-app.use('/',userRoutes);
+app.use('/api/v1',userRoutes);
 
 app.listen(port, () => {
     console.log(`Server started at http://localhost:${port}`);
