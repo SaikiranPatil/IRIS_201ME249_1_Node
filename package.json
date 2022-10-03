@@ -1,0 +1,23 @@
+{
+  "name": "iris_code-in_107_task",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SaikiranPatil/IRIS_201ME249_1_Node.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SaikiranPatil/IRIS_201ME249_1_Node/issues"
+  },
+  "homepage": "https://github.com/SaikiranPatil/IRIS_201ME249_1_Node#readme",
+  "dependencies": {
+    "express": "^4.18.1",
+    "nodemon": "^2.0.20"
+  }
+}
