@@ -1,5 +1,6 @@
 const catchAsyncError = require("../middleware/catchAsyncError");
 const User = require("../model/userModel");
+const sendToken = require("../utils/JWTToken");
 
 // register an user 
 exports.registerUser = catchAsyncError(async (req, res, next) => {
@@ -10,8 +11,5 @@ exports.registerUser = catchAsyncError(async (req, res, next) => {
         name, email, password, club
     })
 
-    res.status(300).json({
-        sucess: true,
-        user
-    });
+    sendToken(user, 201, res);
 })
