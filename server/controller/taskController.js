@@ -20,10 +20,10 @@ exports.createTask = catchAsyncError(async (req, res, next) => {
 // create subTask
 exports.createSubTask = catchAsyncError(async (req, res, next) => {
 
-    const { taskId, title, description, assignee, status, deadline } = req.body;
+    const { taskId, title, description, assignee, status, deadline, file } = req.body;
 
-    const subTask = {
-        title, description, assignee, status, deadline
+    const newSubTask = {
+        title, description, assignee, status, deadline, file
     };
 
     const task = await Task.findById(taskId);
@@ -45,7 +45,7 @@ exports.createSubTask = catchAsyncError(async (req, res, next) => {
     }
 
 
-    task.subTask.push(subTask);
+    task.subTask.push(newSubTask);
 
     await task.save({ validateBeforeSave: false });
 
