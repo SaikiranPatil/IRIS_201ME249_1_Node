@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 
+const cookieParser = require("cookie-parser");
 const dotenv = require("dotenv");
 const bodyparser = require("body-parser");
 
@@ -15,6 +16,7 @@ const connectDB = require("./server/database/connections");
 connectDB();
 
 app.use(express.json());
+app.use(cookieParser());
 app.use(bodyparser.urlencoded({extended:true}));
 
 

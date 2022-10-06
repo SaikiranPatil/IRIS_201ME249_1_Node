@@ -3,6 +3,7 @@ const ErrorHandler = require("../utils/errorHandler");
 const User = require("../model/userModel");
 const sendToken = require("../utils/JWTToken");
 const sendEmail = require("../utils/sendEmail");
+const crypto = require("crypto");
 
 // register an user 
 exports.registerUser = catchAsyncError(async (req, res, next) => {
@@ -38,7 +39,6 @@ exports.loginUser = catchAsyncError(async (req, res, next) => {
     }
 
     sendToken(user, 200, res);
-
 })
 
 
@@ -69,8 +69,6 @@ exports.forgotPassword = catchAsyncError(async (req, res, next) => {
     await user.save({ validateBeforeSave: false });
 
     const resetPasswordUrl = `${req.protocol}://${req.get('host')}/api/v1/password/reset/${resetToken}`
-    console.log(resetToken);
-
 
     const message = `Your password reset token is :\n\n ${resetPasswordUrl} \n\n if you have not requsted this please ignore it`;
 
@@ -143,4 +141,136 @@ exports.updatePassword = catchAsyncError(async function (req, res, next) {
     await user.save();
 
     sendToken(user, 200, res);
+})
+
+// get user details
+exports.getUserDetails = catchAsyncError(async function (req, res, next) {
+    const user = await User.findById(req.user.id);
+
+    console.log("saasasdadsdsa");
+
+    res.status(200).json({
+        sucess: true,
+        user
+    })
+})
+
+// update user profile
+exports.updateProfile = catchAsyncError(async function (req, res, next) {
+
+    const newUserData = {
+        name: req.body.name,
+        email: req.body.email,
+    }
+
+    const user = await User.findByIdAndUpdate(req.user.id, newUserData, {
+        new: true,
+        runValidators: true,
+        useFindAndModify: false,
+    });
+
+    res.status(200).json({
+        sucess: true,
+    })
+})
+
+// get single user for admin and club admin
+exports.getSingleUserByAdmin = exports.getSingleUserByClubAdmin = catchAsyncError(async function (req, res, next) {
+    const user = await User.findById(req.params.id);
+
+    if (!user) {
+        return next(new ErrorHandler(`User not found with id:${req.params.id}`));
+    }
+
+    res.status(200).json({
+        sucess: true,
+        user
+    })
+})
+
+module.exports.getAllUsersByAdmin = catchAsyncError(async function (req, res, next) {
+    const users = await User.find();
+
+    res.status(200).json({
+        sucess: true,
+        users
+    })
+})
+
+module.exports.getAllUsersByClubAdmin = catchAsyncError(async function (req, res, next) {
+    const users = await User.find({"club": req.user.club});
+
+    res.status(200).json({
+        sucess: true,
+        users
+    })
+})
+
+// update user role by admin
+exports.updateUserRoleByAdmin = catchAsyncError(async function (req, res, next) {
+
+    if (req.body.role !== 'admin' && req.body.role !== 'cadmin' && req.body.role !== 'user') {
+        return next(new ErrorHandler('Admin can only upadte user role to Admin or Club Admin or user', 401));
+    }
+
+    const newUserData = {
+        name: req.body.name,
+        email: req.body.email,
+        role: req.body.role
+    }
+
+    const user = await User.findByIdAndUpdate(req.params.id, newUserData, {
+        new: true,
+        runValidators: true,
+        useFindAndModify: false,
+    });
+
+    res.status(200).json({
+        sucess: true,
+        user
+    })
+})
+
+// update user role by club admin
+exports.updateUserRoleByClubAdmin = catchAsyncError(async function (req, res, next) {
+
+    if (req.body.role !== 'cadmin' && req.body.role !== 'user') {
+        return next(new ErrorHandler('Club Admin can only upadte user role to Club Admin', 401));
+    }
+
+    const newUserData = {
+        name: req.body.name,
+        email: req.body.email,
+        role: req.body.role,
+        club: req.body.club
+    }
+
+    const user = await User.findByIdAndUpdate(req.params.id, newUserData, {
+        new: true,
+        runValidators: true,
+        useFindAndModify: false,
+    });
+
+    res.status(200).json({
+        sucess: true,
+        user
+    })
+})
+
+
+// delete user by admin and club admin
+exports.deleteUserByAdmin = exports.deleteUserByClubAdmin = catchAsyncError(async function (req, res, next) {
+
+    const user = await User.findById(req.params.id);
+
+    if (!user) {
+        return next(new ErrorHandler(`User not found with id:${req.params.id}`));
+    }
+
+    await user.delete();
+
+    res.status(200).json({
+        sucess: true,
+        message: 'User deleted successfully'
+    })
 })
