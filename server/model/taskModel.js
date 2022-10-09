@@ -18,39 +18,33 @@ const taskSchema = new mongoose.Schema({
         select: false
     },
     club: String,
-    subTask: [
+    subTasks: [
         {
-            user: {
+            subTaskTitle: {
+                type: String,
+                required: [true, "Please Enter Title for the Task"],
+                maxLength: [30, "Title cannot be greater than 31 Characters"],
+                minLength: [3, "Title cannot be less than 3 characters"],
+            },
+            assigneeId: {
                 type: mongoose.Schema.ObjectId,
                 ref: "User",
-                // required: true,
-            },
-            title: {
-                type: String,
-                required: [true, "Please Enter Title for Sub-Task"],
-                maxLength: [30, "Sub-Task Title cannot be greater than 31 Characters"],
-                minLength: [3, "Sub-Task cannot be less than 3 characters"],
-                unique: [true, "Sub-Task Already Exists"],
             },
             description: {
                 type: String,
-                required: [true, "Please enter a descrption for the Sub-Task"],
+                required: true,
             },
             deadline: {
                 type: Date,
                 required: [true, "Please Enter Deadline for the Sub-Task"]
             },
-            assignee: {
-                type: mongoose.Schema.ObjectId,
-                ref: "User",
-                required: true,
-            },
             status: {
                 type: Boolean,
                 default: false,
             },
-            file: {
-                type: String,
+            assignedById: {
+                type: mongoose.Schema.ObjectId,
+                ref: "User",
             },
             createdAt: {
                 type: Date,
@@ -58,6 +52,10 @@ const taskSchema = new mongoose.Schema({
             }
         }
     ],
+    createdBy: {
+        type: mongoose.Schema.ObjectId,
+        ref: "User",
+    },
     deadline: {
         type: Date,
         required: [true, "Please Enter Deadline for the Task"]
@@ -66,7 +64,6 @@ const taskSchema = new mongoose.Schema({
         type: Date,
         default: Date.now()
     }
-
 });
 
 module.exports = mongoose.model("Task", taskSchema);
