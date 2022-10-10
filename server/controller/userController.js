@@ -147,8 +147,6 @@ exports.updatePassword = catchAsyncError(async function (req, res, next) {
 exports.getUserDetails = catchAsyncError(async function (req, res, next) {
     const user = await User.findById(req.user.id);
 
-    console.log("saasasdadsdsa");
-
     res.status(200).json({
         sucess: true,
         user

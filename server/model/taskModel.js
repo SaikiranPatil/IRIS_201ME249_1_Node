@@ -32,11 +32,11 @@ const taskSchema = new mongoose.Schema({
             },
             description: {
                 type: String,
-                required: true,
+                required: [true, "Please Enter Description for the Task"],
             },
             deadline: {
                 type: Date,
-                required: [true, "Please Enter Deadline for the Sub-Task"]
+                required: [true, "Please Enter Deadline for the Sub-Task"],
             },
             status: {
                 type: Boolean,
