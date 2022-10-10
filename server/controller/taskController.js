@@ -41,8 +41,8 @@ exports.getSingleTask = catchAsyncError(async (req, res, next) => {
 exports.updateTask = catchAsyncError(async (req, res, next) => {
     const task = await Task.findById(req.params.id);
 
-    if(!task) {
-        return next(new ErrorHandler(`Task not found with id ${req.params.id}`,404));
+    if (!task) {
+        return next(new ErrorHandler(`Task not found with id ${req.params.id}`, 404));
     }
 
     const newTaskData = {
@@ -99,6 +99,7 @@ exports.createSubTask = catchAsyncError(async (req, res, next) => {
         status,
         deadline,
         file,
+        taskId,
         assignedById: req.user.id
     };
 
@@ -125,23 +126,74 @@ exports.createSubTask = catchAsyncError(async (req, res, next) => {
     });
 })
 
-// update task
-exports.updateSubTask = catchAsyncError(async (req, res, next) => {
-    const newTaskData = {
-        title: req.body.title,
-        description: req.body.description,
-        socialPlatform: req.body.socialPlatform,
-        deadline: req.body.deadline
-    };
+// get single sub task
+exports.getSingleSubTask = catchAsyncError(async (req, res, next) => {
+    const task = await Task.findById(req.params.id);
+    let requiredSubTask = null;
 
-    const task = await Task.findByIdAndUpdate(req.params.id, newTaskData, {
-        new: true,
-        runValidators: true,
-        useFindAndModify: false,
+    task.subTasks.forEach((subTask) => {
+        if (subTask.id == req.body.subTaskId) {
+            requiredSubTask = subTask;
+        }
+    })
+
+    if (!requiredSubTask) {
+        return next(new ErrorHandler(`Sub Task not found with id ${req.body.subTaskId}`, 404));
+    }
+
+    res.status(200).json({
+        sucess: true,
+        subTask: requiredSubTask
+    })
+})
+
+// update sub task
+exports.updateSubTask = catchAsyncError(async (req, res, next) => {
+    const task = await Task.findById(req.params.id);
+
+    if (!task) {
+        return next(new ErrorHandler(`Task not found with id ${req.params.id}`), 400);
+    }
+
+    const newSubTask = {
+        subTaskTitle: req.body.subTaskTitle,
+        description: req.body.description,
+        deadline: req.body.deadline,
+        status: req.body.status
+    }
+
+    const allSubTasks = task.subTasks.map(function (subTask) {
+        if (req.body.subTaskId === subTask.id) {
+            return newSubTask;
+        }
+        return subTask;
     });
+
+    task.subTasks = allSubTasks;
+
+    await task.save({ validateBeforeSave: false });
 
     res.status(200).json({
         sucess: true,
         task
+    })
+})
+
+// delete subTask
+exports.deleteSubTask = catchAsyncError(async (req, res, next) => {
+    const task = await Task.findById(req.params.id);
+
+    if (!task) {
+        return next(new ErrorHandler(`Task not found with id ${req.params.Id}`), 400);
+    }
+
+    const subTasks = task.subTasks.filter(subtask => subtask.id !== req.body.subTaskId);
+
+    task.subTasks = subTasks;
+
+    await task.save({ validateBeforeSave: false });
+
+    res.status(200).json({
+        sucess: true
     })
 })

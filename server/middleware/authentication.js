@@ -2,6 +2,7 @@ const catchAsyncError = require("./catchAsyncError");
 const ErrorHandler = require("../utils/errorHandler");
 const jsonwebtoken = require("jsonwebtoken");
 const User = require("../model/userModel");
+const Task = require("../model/taskModel");
 
 exports.isAuthenticatedUser = catchAsyncError(async (req, res, next) => {
     if (!req.cookies) {
@@ -25,3 +26,20 @@ exports.authorizeRoles = (...roles) => {
         next();
     }
 }
+
+exports.isOfSameClub = catchAsyncError(async (req, res, next) => {
+    const task = await Task.findById(req.params.id);
+
+    if(!task){
+        return next(new ErrorHandler(`Task not found with id ${req.body.id}`), 400);
+    }
+
+    console.log(req.params.id);
+    const user = await User.findById(task.createdBy);
+
+    if(user.club!=req.user.club){
+        return next(new ErrorHandler("Cannot access the resource of Other Club", 401));
+    }
+
+    next();
+})
