@@ -10,6 +10,7 @@ const {
     getSingleSubTask,
     updateSubTask,
     deleteSubTask,
+    updateTaskByAssignee,
 } = require("../controller/taskController.js");
 const {
     isAuthenticatedUser,
@@ -22,5 +23,7 @@ router.route("/task/:id").get(isAuthenticatedUser,isOfSameClub, authorizeRoles("
 router.route("/tasks/subtasks/create").post(isAuthenticatedUser, authorizeRoles("cadmin"), createSubTask);
 router.route("/tasks/subtask/:id").get(isAuthenticatedUser,isOfSameClub, authorizeRoles("cadmin"), getSingleSubTask).put(isAuthenticatedUser, isOfSameClub,authorizeRoles("cadmin"), updateSubTask).delete(isAuthenticatedUser, isOfSameClub, authorizeRoles("cadmin"),deleteSubTask);
 router.route("/tasks/all").get(isAuthenticatedUser, authorizeRoles("cadmin", "user"), getAllTasks);
+router.route("/tasks/subtask/assignee/update").get(isAuthenticatedUser, authorizeRoles("user"), updateTaskByAssignee);
+
 
 module.exports = router; 

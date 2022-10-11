@@ -197,3 +197,29 @@ exports.deleteSubTask = catchAsyncError(async (req, res, next) => {
         sucess: true
     })
 })
+
+// update task by assginee
+exports.updateTaskByAssignee = catchAsyncError(async (req, res, next) => {
+    const task = await Task.findById(req.params.id);
+
+    if(!task){
+        return next(new ErrorHandler(`Task not found with id ${req.body.id}`), 400);
+    }
+
+    const allSubTasks = task.subTasks.map(function (subTask) {
+        if (req.body.subTaskId === subTask.id) {
+            subTask.status = req.body.status;
+            subTask.file = req.body.file;
+        }
+        return subTask;
+    });
+
+    task.subTasks = allSubTasks;
+
+    await task.save({ validateBeforeSave: false });
+
+    res.status(200).json({
+        sucess: true,
+        task
+    })
+})

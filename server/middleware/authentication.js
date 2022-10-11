@@ -34,7 +34,6 @@ exports.isOfSameClub = catchAsyncError(async (req, res, next) => {
         return next(new ErrorHandler(`Task not found with id ${req.body.id}`), 400);
     }
 
-    console.log(req.params.id);
     const user = await User.findById(task.createdBy);
 
     if(user.club!=req.user.club){
