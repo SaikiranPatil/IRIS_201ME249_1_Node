@@ -1,8 +1,40 @@
-import React from 'react'
+import React, { useState, useRef, useEffect } from "react";
 import './Login.css'
-import { Link } from 'react-router-dom'
+import { useDispatch, useSelector } from "react-redux";
+import { clearErrors, login, register } from "../../../Redux/Actions/userAction";
+import { useAlert } from "react-alert";
+import { useNavigate, Link } from "react-router-dom";
 
 const Login = () => {
+  const dispatch = useDispatch();
+  const alert = useAlert();
+
+  const history = useNavigate();
+
+
+  const { error, loading, isAuthenticated } = useSelector(
+    (state) => state.user
+  );
+
+  const [loginEmail, setLoginEmail] = useState("");
+  const [loginPassword, setLoginPassword] = useState("");
+
+  const loginSubmit = (e) => {
+    e.preventDefault();
+    console.log("login submitted");
+    dispatch(login(loginEmail, loginPassword));
+  };
+
+  useEffect(() => {
+    if (error) {
+      alert.error(error);
+      dispatch(clearErrors());
+    }
+    if (isAuthenticated) {
+      history.push(`/account`);
+    }
+  }, [dispatch, error, alert, isAuthenticated, history]);
+
   return (
     <>
       <div className="account-login section">

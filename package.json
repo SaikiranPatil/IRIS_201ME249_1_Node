@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/SaikiranPatil/IRIS_201ME249_1_Node#readme",
   "dependencies": {
+    "axios": "^1.1.2",
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.6",
     "crypto": "^1.0.1",
@@ -27,6 +28,9 @@
     "mongoose": "^6.6.3",
     "nodemailer": "^6.8.0",
     "nodemon": "^2.0.20",
+    "react-helmet": "^6.1.0",
+    "react-redux": "^8.0.4",
+    "redux-thunk": "^2.4.1",
     "validator": "^13.7.0"
   }
 }
