@@ -1,15 +1,13 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import './Login.css'
 import { useDispatch, useSelector } from "react-redux";
-import { clearErrors, login, register } from "../../../Redux/Actions/userAction";
-import { useAlert } from "react-alert";
+import { clearErrors, login } from "../../../redux/actions/userAction";
 import { useNavigate, Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const dispatch = useDispatch();
-  const alert = useAlert();
-
-  const history = useNavigate();
+  const navigate = useNavigate();
 
 
   const { error, loading, isAuthenticated } = useSelector(
@@ -26,14 +24,15 @@ const Login = () => {
   };
 
   useEffect(() => {
+    console.log("loading...")
     if (error) {
-      alert.error(error);
+      toast.error(error);
       dispatch(clearErrors());
     }
     if (isAuthenticated) {
-      history.push(`/account`);
+      navigate(`/dashboard`);
     }
-  }, [dispatch, error, alert, isAuthenticated, history]);
+  }, [dispatch, error, isAuthenticated, navigate]);
 
   return (
     <>
@@ -50,6 +49,8 @@ const Login = () => {
                       type="email"
                       id="reg-email"
                       required=""
+                      value={loginEmail} 
+                      onChange={(e)=>{setLoginEmail(e.target.value)}} 
                     />
                   </div>
                   <div className="form-group input-group">
@@ -59,6 +60,8 @@ const Login = () => {
                       type="password"
                       id="reg-pass"
                       required=""
+                      value={loginPassword} 
+                      onChange={(e)=>{setLoginPassword(e.target.value)}} 
                     />
                   </div>
                   <div className="d-flex flex-wrap justify-content-between bottom-content">
@@ -75,7 +78,7 @@ const Login = () => {
                     </Link>
                   </div>
                   <div className="button">
-                    <button className="btn" type="submit">
+                    <button className="btn" type="submit" onClick={loginSubmit}>
                       Login
                     </button>
                   </div>
