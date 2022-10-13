@@ -52,6 +52,10 @@ const taskSchema = new mongoose.Schema({
             }
         }
     ],
+    noOfsubTasks: {
+        type: Number,
+        default: 0
+    },
     createdBy: {
         type: mongoose.Schema.ObjectId,
         ref: "User",
