@@ -1,9 +1,24 @@
 import React from 'react'
 import './Header.css'
 import { AiOutlineUser } from "react-icons/ai";
-import { Link } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { logOut } from '../../../redux/actions/userAction';
+import { useDispatch, useSelector } from "react-redux";
+import { display } from "../../Utils/toast";
 
-const Header = () => {
+const Header = ({ user, isAuthenticated }) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+
+  const logOutClick = () => {
+    dispatch(logOut());
+    display("Logged Out Sucessfully","sucess");
+    navigate("/login");
+  };
+
   return (
     <>
       <header className="header navbar-area">
@@ -14,7 +29,7 @@ const Header = () => {
                 <div className="top-left">
                   <Link to="/" className="logo">
                     <span className="title">
-                      Media{" "}
+                      Media
                     </span>
                     Manager
                   </Link>
@@ -38,16 +53,28 @@ const Header = () => {
               <div className="col-lg-4 col-md-4 col-12">
                 <div className="top-end">
                   <div className="user">
-                    <AiOutlineUser />
-                    Hello
                   </div>
                   <ul className="user-login">
-                    <li>
-                      <Link to="/login">Sign In</Link>
-                    </li>
-                    <li>
-                      <Link to="/register">Register</Link>
-                    </li>
+                    {
+                      isAuthenticated ?
+                        <>
+                          <AiOutlineUser />
+                          <li>
+                            <Link to="/account">{user && user.name}</Link>
+                          </li>
+                          <li>
+                            <Link onClick={logOutClick}>Log Out</Link>
+                          </li>
+                        </> :
+                        <>
+                          <li>
+                            <Link to="/login">Sign In</Link>
+                          </li>
+                          <li>
+                            <Link to="/register">Register</Link>
+                          </li>
+                        </>
+                    }
                   </ul>
                 </div>
               </div>
