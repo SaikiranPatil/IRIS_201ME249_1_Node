@@ -1,8 +1,42 @@
-import React from 'react'
 import './Register.css'
-import {Link} from 'react-router-dom'
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { clearErrors, register } from "../../../redux/actions/userAction";
+import { useNavigate, Link } from "react-router-dom";
+import { display } from '../../Utils/toast';
 
 const Register = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const { error, loading, isAuthenticated } = useSelector(
+    (state) => state.user
+  );
+
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("")
+
+  const signUpSubmit = (e) => {
+    e.preventDefault();
+
+    if (password !== confirmPassword) {
+      display("Password and Confirm Password did not match", "error");
+    } else {
+      dispatch(register(name,email,password));
+    }
+  };
+
+  useEffect(() => {
+    if (error) {
+      display(error,"error");
+      dispatch(clearErrors());
+    }
+    if (isAuthenticated) {
+      navigate(`/account`);
+    }
+  }, [dispatch, error, isAuthenticated, navigate]);
   return (
     <div className="account-login section">
       <div className="container">
@@ -16,7 +50,7 @@ const Register = () => {
                   over your orders.
                 </p>
               </div>
-              <form className="row" method="post">
+              <form className="row" onSubmit={signUpSubmit}>
                 <div className="col-sm-6">
                   <div className="form-group">
                     <label htmlFor="reg-fn">First Name</label>
@@ -24,7 +58,10 @@ const Register = () => {
                       className="form-control"
                       type="text"
                       id="reg-fn"
+                      name="name"
                       required=""
+                      value={name}
+                      onChange={(e) => { setName(e.target.value) }}
                     />
                   </div>
                 </div>
@@ -34,8 +71,11 @@ const Register = () => {
                     <input
                       className="form-control"
                       type="email"
+                      name="email"
                       id="reg-email"
                       required=""
+                      value={email}
+                      onChange={(e) => { setEmail(e.target.value) }}
                     />
                   </div>
                 </div>
@@ -46,7 +86,10 @@ const Register = () => {
                       className="form-control"
                       type="password"
                       id="reg-pass"
+                      name="password"
                       required=""
+                      value={password}
+                      onChange={(e) => { setPassword(e.target.value) }}
                     />
                   </div>
                 </div>
@@ -58,6 +101,8 @@ const Register = () => {
                       type="password"
                       id="reg-pass-confirm"
                       required=""
+                      value={confirmPassword}
+                      onChange={(e) => { setConfirmPassword(e.target.value) }}
                     />
                   </div>
                 </div>
