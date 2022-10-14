@@ -5,12 +5,12 @@ const ErrorHandler = require("../utils/errorHandler");
 // create a task
 exports.createTask = catchAsyncError(async (req, res, next) => {
 
-    const { title, description, socialPlatform, deadline } = req.body;
+    const { title, description, social, deadline } = req.body;
 
     const task = await Task.create({
         title,
         description,
-        socialPlatform,
+        social,
         deadline,
         createdBy: req.user.id,
         "club": req.user.club,
@@ -48,7 +48,7 @@ exports.updateTask = catchAsyncError(async (req, res, next) => {
     const newTaskData = {
         title: req.body.title,
         description: req.body.description,
-        socialPlatform: req.body.socialPlatform,
+        social: req.body.social,
         deadline: req.body.deadline
     };
 
@@ -112,11 +112,17 @@ exports.createSubTask = catchAsyncError(async (req, res, next) => {
     const User = require('../model/userModel');
     const assigneeUser = await User.findById(assigneeId);
 
+    if(!assigneeUser) {
+        return next(new ErrorHandler(`Assignee not found with id ${assigneeId}`),401);
+    }
+
     if (assigneeUser.club != req.user.club) {
         return next(new ErrorHandler(`Assignee Must be of the same club, cannot assign Sub-Tasks to member of Club: ${assigneeUser.club}`), 400);
     }
 
     task.subTasks.push(newSubTask);
+
+    task.noOfsubTasks = task.noOfsubTasks + 1;
 
     await task.save({ validateBeforeSave: false });
 
@@ -202,7 +208,7 @@ exports.deleteSubTask = catchAsyncError(async (req, res, next) => {
 exports.updateTaskByAssignee = catchAsyncError(async (req, res, next) => {
     const task = await Task.findById(req.params.id);
 
-    if(!task){
+    if (!task) {
         return next(new ErrorHandler(`Task not found with id ${req.body.id}`), 400);
     }
 

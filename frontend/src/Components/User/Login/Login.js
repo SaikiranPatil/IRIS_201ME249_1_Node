@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { clearErrors, login } from "../../../redux/actions/userAction";
 import { useNavigate, Link } from "react-router-dom";
 import 'react-toastify/dist/ReactToastify.css';
-import { display } from "../../Utils/toast";
+import { display } from "../../Utils/utils";
 
 const Login = () => {
   const dispatch = useDispatch();

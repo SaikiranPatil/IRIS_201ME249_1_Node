@@ -12,7 +12,7 @@ const taskSchema = new mongoose.Schema({
         type: String,
         required: [true, "Please enter a descrption for the Task"],
     },
-    socialPlatform: {
+    social: {
         type: String,
         required: [true, "Enter Social Platform"],
         select: false
@@ -63,6 +63,10 @@ const taskSchema = new mongoose.Schema({
     deadline: {
         type: Date,
         required: [true, "Please Enter Deadline for the Task"]
+    },
+    status: {
+        type: Boolean,
+        default: false,
     },
     createdAt: {
         type: Date,
