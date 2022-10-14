@@ -1,0 +1,29 @@
+.single-block .task-btn {
+    margin-top: 30px;
+    padding: 12px 30px;
+    width: 100%;
+    background-color: #0167f3;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 4px;
+    transition: all .4s ease;
+}
+
+.single-block .task-btn:hover {
+    color: #fff;
+    background-color: #081828
+}
+
+.single-block .edit-btn {
+    border: 1px solid #eee;
+    border-radius: 4px;
+    color: #555;
+    background: none;
+}
+
+.single-block .edit-btn:hover {
+    color: #fff;
+    background-color: #081828;
+    border-color: transparent;
+}

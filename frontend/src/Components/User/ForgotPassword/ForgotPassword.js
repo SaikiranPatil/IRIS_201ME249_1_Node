@@ -4,7 +4,7 @@ import "./ForgotPassword.css";
 import { clearErrors, forgotPassword, loadUser } from "../../../redux/actions/userAction";
 import { useNavigate, Link } from "react-router-dom";
 import { FORGOT_PASSWORD_RESET } from "../../../redux/constants/userConstants";
-import { display } from "../../Utils/toast";
+import { display } from "../../Utils/utils";
 
 const ForgotPassword = () => {
   const dispatch = useDispatch();

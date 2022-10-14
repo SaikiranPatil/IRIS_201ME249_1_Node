@@ -1,0 +1,16 @@
+.product-grids .add-task-btn {
+    margin-top: 30px;
+    padding: 12px 30px;
+    width: 100%;
+    background-color: #0167f3;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 4px;
+    transition: all .4s ease;
+}
+
+.product-grids .add-task-btn:hover {
+    color: #fff;
+    background-color: #081828
+}

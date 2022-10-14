@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { clearErrors, register } from "../../../redux/actions/userAction";
 import { useNavigate, Link } from "react-router-dom";
-import { display } from '../../Utils/toast';
+import { display } from '../../Utils/utils';
 
 const Register = () => {
   const dispatch = useDispatch();

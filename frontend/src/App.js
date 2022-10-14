@@ -12,9 +12,12 @@ import { ToastContainer } from 'react-toastify';
 import Profile from './Components/User/Profile/Profile';
 import Forgot from './Components/User/ForgotPassword/ForgotPassword';
 import AllTasks from './Components/Tasks/AllTasks/AllTasks';
+import ProtectedRoute from './Components/Route/ProtectedRoute'
+import SingleTask from './Components/Tasks/SingleTask/SingleTask';
+import NewTask from './Components/Tasks/NewTask/NewTask';
 
 function App() {
-  const { isAuthenticated, user } = useSelector(state => state.user);
+  const { isAuthenticated, user, loading } = useSelector(state => state.user);
 
   React.useEffect(() => {
     store.dispatch(loadUser());
@@ -23,11 +26,13 @@ function App() {
     <BrowserRouter>
       <Header user={user} isAuthenticated={isAuthenticated} />
       <Routes>
+        <Route path="/" element={<AllTasks />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/forgot" element={<Forgot />} />
-        <Route path="/account" element={<Profile user={user} isAuthenticated={isAuthenticated} />} />
-        <Route path="/tasks" element={<AllTasks />} />
+        <Route path="/account" element={<Profile />} />
+        <Route excat path="/tasks/new" element={<NewTask />} />
+        <Route path="/task/:id" element={<SingleTask />} />
       </Routes>
       <Footer />
       <ToastContainer />

@@ -1,0 +1,39 @@
+.single-product .product-image .normal-tag {
+    background: #1067f3;
+    border-radius: 2px;
+    font-size: 12px;
+    color: #fff;
+    font-weight: 700;
+    position: absolute;
+    top: 0;
+    padding: 5px 10px;
+    left: 0;
+    z-index: 22;
+}
+
+.single-product .product-info {
+    padding: 0 20px 20px 150px !important;
+    position: relative;
+}
+
+.task .icons {
+    height: 60px;
+    width: 60px;
+    position: absolute;
+    color: #0167f3;
+    left: 0;
+    top: 0;
+    margin: 0.75rem 3rem;
+}
+
+.icons svg{
+    height: 40px;
+    width: 40px;
+    margin: 0.5rem;
+}
+
+.single-product .product-info .subTaskCount{
+    margin-top: 5px;
+    font-size: 13px;
+    color: #777;
+}

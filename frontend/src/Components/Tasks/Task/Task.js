@@ -1,32 +1,42 @@
 import React from 'react'
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { countDays, formatDate } from '../../Utils/utils';
+import './Task.css'
+import { BsClipboard } from 'react-icons/bs'
 
-const Task = () => {
-    const navigate = useNavigate();
+const Task = ({ task }) => {
+
     return (
-        <div className="col-lg-4 col-md-6 col-12" onClick={() => navigate("/task/23hhj234")} style={{"cursor":"pointer"}}>
+        <div className="task col-lg-4 col-md-6 col-12">
             <div className="single-product">
                 <div className="product-image">
-                    <img src="assets/images/products/product-7.jpg" alt="#" />
-                    <span className="sale-tag">5 Days Left</span>
-                    <span className="new-tag">Completed </span>
+                    <img alt="#" style={{"opacity":"0"}}/>
+                    {/* <span className="sale-tag">5 Days Left</span>
+                    <span className="normal-tag">{countDays(task.deadline)} Days Left</span> */}
+                    {
+                        task.status ?
+                            <span className="new-tag">Completed </span>
+                            :<></>
+                    }
                 </div>
                 <div className="product-info">
-                    <span className="category">Watches</span>
-                    <h4 className="title">
-                        <a href="product-grids.html">Xiaomi Mi Band 5</a>
-                    </h4>
-                    <ul className="review">
-                        <li>
-                            <span>5 SubTask(s)</span>
-                        </li>
-                    </ul>
-                    <div className="price">
-                        <span>$199.00</span>
+                    <div className="icons">
+                        <BsClipboard />
                     </div>
+                    <span className="category">{task.socialPlatform}</span>
+                    <h4 className="title" >
+                        <Link to={`/task/${task._id}`}>{task.title}</Link>
+                    </h4>
+
+                    <div className="subTaskCount">{task.noOfsubTasks} SubTask(s)</div>
+                    {
+                        countDays(task.deadline) > 0 ?
+                            <span>{countDays(task.deadline)} Day(s) Left</span>
+                            : <span>Overdue by {-1 * countDays(task.deadline)} Days</span>
+                    }
                 </div>
             </div>
-        </div>
+        </div >
     )
 }
 

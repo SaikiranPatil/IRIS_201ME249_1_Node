@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { logOut } from '../../../redux/actions/userAction';
 import { useDispatch, useSelector } from "react-redux";
-import { display } from "../../Utils/toast";
+import { display } from "../../Utils/utils";
 
 const Header = ({ user, isAuthenticated }) => {
   const dispatch = useDispatch();
