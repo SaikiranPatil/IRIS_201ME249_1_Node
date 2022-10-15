@@ -7,7 +7,8 @@ A site to help College Clubs in maintining multiple files for social media prese
 * Users can submit the tasks assigned by their club admins.
 * Admins manage and control the entire store components.
 
-
+## Demo
+ click [here](https://drive.google.com/file/d/1KaocmzkgmFV_deWprJ2XgMMIfsM4Y4eN/view?usp=sharing) to view demo.
 
 ## Installation instructions to set up the project from scratch
 
