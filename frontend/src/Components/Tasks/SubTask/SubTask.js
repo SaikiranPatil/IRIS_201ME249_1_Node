@@ -4,7 +4,6 @@ import { formatDate } from '../../Utils/utils'
 import './SubTask.css'
 
 const SubTask = ({subTask}) => {
-    console.log(subTask)
     return (
         subTask && <div className="single-review">
             <MdOutlineAssignment />

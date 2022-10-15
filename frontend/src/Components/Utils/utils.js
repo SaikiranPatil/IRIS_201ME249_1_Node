@@ -87,6 +87,20 @@ export const formatDate = (date) => {
     return [day, month, year].join('-');
 }
 
+export const formatDateForForm = (date) => {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2)
+        month = '0' + month;
+    if (day.length < 2)
+        day = '0' + day;
+
+    return [year, month, day].join('-');
+}
+
 export const treatAsUTC = (date) => {
     var result = new Date(date);
     result.setMinutes(result.getMinutes() - result.getTimezoneOffset());
@@ -97,4 +111,8 @@ export const countDays = (date) => {
     var millisecondsPerDay = 24 * 60 * 60 * 1000;
     const presentDate = Date.now();
     return Math.floor((treatAsUTC(date) - treatAsUTC(presentDate)) / millisecondsPerDay);
+}
+
+export const reverseStr = (str) => {
+    return str.split("").reverse().join("");
 }

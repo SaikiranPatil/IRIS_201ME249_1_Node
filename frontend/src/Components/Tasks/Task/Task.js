@@ -23,16 +23,16 @@ const Task = ({ task }) => {
                     <div className="icons">
                         <BsClipboard />
                     </div>
-                    <span className="category">{task.socialPlatform}</span>
+                    <span className="category">{task.social}</span>
                     <h4 className="title" >
                         <Link to={`/task/${task._id}`}>{task.title}</Link>
                     </h4>
 
                     <div className="subTaskCount">{task.noOfsubTasks} SubTask(s)</div>
                     {
-                        countDays(task.deadline) > 0 ?
+                        !task.status && (countDays(task.deadline) > 0 ?
                             <span>{countDays(task.deadline)} Day(s) Left</span>
-                            : <span>Overdue by {-1 * countDays(task.deadline)} Days</span>
+                            : <span>Overdue by {-1 * countDays(task.deadline)} Days</span>)
                     }
                 </div>
             </div>

@@ -31,6 +31,12 @@ import {
     RESET_PASSWORD_REQUEST,
     RESET_PASSWORD_FAIL,
     RESET_PASSWORD_SUCESS,
+    ALL_USERS_REQUEST,
+    ALL_USERS_FAIL,
+    ALL_USERS_SUCESS,
+    ALL_USERS_BY_CADMIN_REQUEST,
+    ALL_USERS_BY_CADMIN_FAIL,
+    ALL_USERS_BY_CADMIN_SUCESS,
     LOGOUT_FAIL,
     LOGOUT_SUCESS,
     CLEAR_ERRORS
@@ -237,3 +243,42 @@ export const forgotPasswordReducer = (state = {}, action) => {
             return state;
     }
 };
+
+export const allUserReducer = (state ={users:[]},action)=>{
+    switch (action.type) {
+        case ALL_USERS_BY_CADMIN_REQUEST:
+        case ALL_USERS_REQUEST:
+
+            return {
+                ...state,
+                loading: true,
+            }
+
+        case ALL_USERS_BY_CADMIN_SUCESS:
+        case ALL_USERS_SUCESS:
+
+            return {
+                ...state,
+                loading: false,
+                users: action.payload,
+            }
+
+        case ALL_USERS_BY_CADMIN_FAIL:
+        case ALL_USERS_FAIL:
+
+            return {
+                ...state,
+                loading: false,
+                error: action.payload
+            }
+
+        case CLEAR_ERRORS:
+            return {
+                ...state,
+                error: null
+            }
+
+        default:
+            return state;
+    }
+}

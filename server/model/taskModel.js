@@ -8,14 +8,13 @@ const taskSchema = new mongoose.Schema({
         minLength: [3, "Title cannot be less than 3 characters"],
         unique: [true, "Title for the Task Already Exists"],
     },
-    description: {
-        type: String,
-        required: [true, "Please enter a descrption for the Task"],
-    },
     social: {
         type: String,
         required: [true, "Enter Social Platform"],
-        select: false
+    },
+    description: {
+        type: String,
+        required: [true, "Please enter a descrption for the Task"],
     },
     club: String,
     subTasks: [

@@ -1,0 +1,15 @@
+#footer-logo {
+    border: none;
+    appearance: none;
+    position: relative;
+    border: none;
+    padding: 0 10px 0 0px;
+    color: #fff !important;
+    font-size: 28px;
+    font-weight: 800;
+    background-color: #081828 !important;
+}
+
+#footer-logo .title {
+    color: #0167F3;
+}

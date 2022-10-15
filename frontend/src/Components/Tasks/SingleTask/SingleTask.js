@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { clearErrors, taskDetails } from '../../../redux/actions/taskActions';
+import { clearErrors, deleteTask, taskDetails } from '../../../redux/actions/taskActions';
 import { useDispatch, useSelector } from "react-redux";
 import { display, formatDate } from '../../Utils/utils';
-import Loading from '../../Utils/Loading/Loading';
+import Loader from '../../Utils/Loader/Loader';
 import SubTask from '../SubTask/SubTask';
 import './SingleTask.css'
+import { DELETE_TASK_RESET } from '../../../redux/constants/taskConstants';
 
 const SingleTask = () => {
 
@@ -17,19 +18,32 @@ const SingleTask = () => {
 
     const { task, loading, error } = useSelector(store => store.taskDetails);
 
+    const { loading: deleteLoading, isDeleted, error: deleteError } = useSelector(store => store.newTask);
+
+    const onDeleteBtnClick = () => {
+        dispatch(deleteTask(id));
+    }
+
     useEffect(() => {
         if (error) {
             display(error, "error");
             dispatch(clearErrors);
         }
+        if (isDeleted) {
+            display("Task deleted successfully")
+            navigate("/");
+            dispatch({ type: DELETE_TASK_RESET });
+        }
         dispatch(taskDetails(id));
-    }, [dispatch])
+    }, [dispatch, isDeleted])
+
+    if (!task) return
 
 
     return (
         <>
             {
-                task && loading ? <Loading /> :
+                loading ? <Loader /> :
                     <>
                         <section className="item-details section">
                             <div className="container">
@@ -53,7 +67,9 @@ const SingleTask = () => {
                                                     <h4>Deadline</h4>
                                                     <p>{formatDate(task.deadline)}</p>
                                                     <h4>Social Platform</h4>
-                                                    <p>{task.social}</p>
+                                                    <p>{task.social ? task.social : "Instagram"}</p>
+                                                    <h4>Date Created</h4>
+                                                    <p>{formatDate(task.createdAt)}</p>
                                                 </div>
                                             </div>
                                             <div className="col-lg-6 col-12">
@@ -72,8 +88,8 @@ const SingleTask = () => {
                                                 >
                                                     Add SubTask
                                                 </button>
-                                                <button className="btn task-btn edit-btn">Delete Task</button>
-                                                <button className="btn task-btn edit-btn">Edit Task</button>
+                                                <button className="btn task-btn edit-btn" onClick={onDeleteBtnClick}>Delete Task</button>
+                                                <button className="btn task-btn edit-btn" onClick={() => navigate(`/task/edit/${id}`)}>Edit Task</button>
                                             </div>
                                         </div>
                                         <div className="col-lg-8 col-12">

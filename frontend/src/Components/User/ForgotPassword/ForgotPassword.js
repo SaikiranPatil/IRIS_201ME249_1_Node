@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "./ForgotPassword.css";
-import { clearErrors, forgotPassword, loadUser } from "../../../redux/actions/userAction";
+import { clearErrors, forgotPassword } from "../../../redux/actions/userAction";
 import { useNavigate, Link } from "react-router-dom";
 import { FORGOT_PASSWORD_RESET } from "../../../redux/constants/userConstants";
 import { display } from "../../Utils/utils";
+import Loader from "../../Utils/Loader/Loader";
 
 const ForgotPassword = () => {
   const dispatch = useDispatch();
@@ -15,12 +16,7 @@ const ForgotPassword = () => {
   const forgotPasswordSubmit = (e) => {
     e.preventDefault();
 
-    console.log(email)
-
-    const myForm = new FormData();
-    myForm.set("email", email);
-
-    dispatch(forgotPassword(myForm));
+    dispatch(forgotPassword({ email }));
   }
 
   const { error, message, loading } = useSelector(state => state.forgotPassword)
@@ -36,6 +32,8 @@ const ForgotPassword = () => {
       dispatch({ type: FORGOT_PASSWORD_RESET });
     }
   }, [dispatch, error, navigate, loading, message]);
+
+  if (loading) { return <Loader /> }
 
   return (
     <>
@@ -70,8 +68,8 @@ const ForgotPassword = () => {
                     </button>
                   </div>
                   <p className="outer-link">
-                  Already have an account? <Link to="/login">Login Now</Link>
-                </p>
+                    Already have an account? <Link to="/login">Login Now</Link>
+                  </p>
                 </form>
               </div>
             </div>

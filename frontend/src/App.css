@@ -1,4 +1,8 @@
-textarea{
+textarea {
     height: 100px !important;
     padding-top: 1rem;
+}
+
+.section {
+    min-height: calc(100vh - 66px);
 }

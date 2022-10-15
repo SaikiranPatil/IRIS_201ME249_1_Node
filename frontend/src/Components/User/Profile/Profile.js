@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react'
-import { useNavigate, Link } from "react-router-dom";
+import React from 'react'
+import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { FaUserCircle } from 'react-icons/fa';
 import { TbSubtask } from 'react-icons/tb';
 import { BiTask } from 'react-icons/bi';
 import './Profile.css'
-import Loading from '../../Utils/Loading/Loading';
+import Loader from '../../Utils/Loader/Loader';
 
 const Profile = () => {
     const navigate = useNavigate();
@@ -22,7 +22,7 @@ const Profile = () => {
     return (
         <>{
             loading ?
-                <Loading /> :
+                <Loader /> :
                 <>
                     <section className="item-details section">
                         <div className="container">
@@ -49,7 +49,7 @@ const Profile = () => {
                                                 <div className="row align-items-end">
                                                     <div className="col-lg-4 col-md-4 col-12">
                                                         <div className="button cart-button">
-                                                            <button className="btn" style={{ width: "100%" }} onClick={() => navigate("/tasks/subtasks")}>
+                                                            <button className="btn" style={{ width: "100%" }} onClick={() => navigate("/tasks/subtasks/me")}>
                                                                 <TbSubtask size="1.2rem" />
                                                                 My Sub-Tasks
                                                             </button>

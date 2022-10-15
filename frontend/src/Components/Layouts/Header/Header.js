@@ -1,11 +1,10 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import './Header.css'
 import { AiOutlineUser } from "react-icons/ai";
 import { useNavigate, Link } from 'react-router-dom'
-import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { logOut } from '../../../redux/actions/userAction';
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { display } from "../../Utils/utils";
 
 const Header = ({ user, isAuthenticated }) => {
@@ -18,6 +17,13 @@ const Header = ({ user, isAuthenticated }) => {
     display("Logged Out Sucessfully","sucess");
     navigate("/login");
   };
+  
+  useEffect(() => {
+    if(!isAuthenticated){
+      navigate("/login");
+    }
+  }, [isAuthenticated])
+  
 
   return (
     <>
@@ -42,10 +48,7 @@ const Header = ({ user, isAuthenticated }) => {
                       <Link to="/">Home</Link>
                     </li>
                     <li>
-                      <Link to="/about">About Us</Link>
-                    </li>
-                    <li>
-                      <Link to="/contact">Contact Us</Link>
+                      <Link to="tasks/subtasks/me">My SubTasks</Link>
                     </li>
                   </ul>
                 </div>

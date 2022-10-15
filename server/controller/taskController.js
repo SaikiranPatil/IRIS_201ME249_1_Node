@@ -1,6 +1,7 @@
 const Task = require('../model/taskModel')
 const catchAsyncError = require("../middleware/catchAsyncError");
 const ErrorHandler = require("../utils/errorHandler");
+const sendEmail = require("../utils/sendEmail");
 
 // create a task
 exports.createTask = catchAsyncError(async (req, res, next) => {
@@ -52,6 +53,8 @@ exports.updateTask = catchAsyncError(async (req, res, next) => {
         deadline: req.body.deadline
     };
 
+    console.log(newTaskData)
+
     const updatedTask = await Task.findByIdAndUpdate(req.params.id, newTaskData, {
         new: true,
         runValidators: true,
@@ -60,7 +63,7 @@ exports.updateTask = catchAsyncError(async (req, res, next) => {
 
     res.status(200).json({
         sucess: true,
-        updatedTask
+        task: updatedTask
     })
 })
 
@@ -112,13 +115,18 @@ exports.createSubTask = catchAsyncError(async (req, res, next) => {
     const User = require('../model/userModel');
     const assigneeUser = await User.findById(assigneeId);
 
-    if(!assigneeUser) {
-        return next(new ErrorHandler(`Assignee not found with id ${assigneeId}`),401);
+    if (!assigneeUser) {
+        return next(new ErrorHandler(`Assignee not found with id ${assigneeId}`), 401);
     }
 
     if (assigneeUser.club != req.user.club) {
         return next(new ErrorHandler(`Assignee Must be of the same club, cannot assign Sub-Tasks to member of Club: ${assigneeUser.club}`), 400);
     }
+
+    assigneeUser.subTasks.push(taskId);
+
+    await assigneeUser.save({ validateBeforeSave: false });
+
 
     task.subTasks.push(newSubTask);
 
@@ -126,10 +134,25 @@ exports.createSubTask = catchAsyncError(async (req, res, next) => {
 
     await task.save({ validateBeforeSave: false });
 
-    res.status(200).json({
-        sucess: true,
-        task
-    });
+    const message = `Title: ${task.title}/n with deadline ${task.deadline}`;
+
+    try {
+        await sendEmail({
+            email: assigneeUser.email,
+            subject: `You have been assigned a task by ${req.user.name}`,
+            message
+        })
+
+        res.status(200).json({
+            sucess: true,
+            task
+        });
+
+    } catch (error) {
+        console.log(error.message);
+
+        return next(new ErrorHandler(error.message, 500))
+    }
 })
 
 // get single sub task

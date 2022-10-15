@@ -23,6 +23,9 @@ import {
     RESET_PASSWORD_REQUEST,
     RESET_PASSWORD_FAIL,
     RESET_PASSWORD_SUCESS,
+    ALL_USERS_BY_CADMIN_REQUEST,
+    ALL_USERS_BY_CADMIN_FAIL,
+    ALL_USERS_BY_CADMIN_SUCESS,
     ALL_USERS_REQUEST,
     ALL_USERS_FAIL,
     ALL_USERS_SUCESS,
@@ -120,7 +123,7 @@ export const updateUsers = (userData) => async (dispatch) => {
         console.log(error)
         dispatch({
             type: UPDATE_USERS_FAIL,
-            payload: error.response.data.error,
+            payload: error.response.data.replace(/<(?:.|\n)*?>/gm, '').replace(/(\r\n|\n|\r)/gm, "").replace(/(?<=\&nbsp).*/gm, "").replace('&nbsp', ""),
         })
     }
 };
@@ -146,7 +149,7 @@ export const updatePassword = (userData) => async (dispatch) => {
         console.log(error);
         dispatch({
             type: UPDATE_PASSWORD_FAIL,
-            payload: error.response.data.error,
+            payload: error.response.data.replace(/<(?:.|\n)*?>/gm, '').replace(/(\r\n|\n|\r)/gm, "").replace(/(?<=\&nbsp).*/gm, "").replace('&nbsp', ""),
         })
     }
 };
@@ -168,7 +171,7 @@ export const forgotPassword = (email) => async (dispatch) => {
     } catch (error) {
         dispatch({
             type: FORGOT_PASSWORD_FAIL,
-            payload: "Some Internal Error occoured",
+            payload: error.response.data.replace(/<(?:.|\n)*?>/gm, '').replace(/(\r\n|\n|\r)/gm, "").replace(/(?<=\&nbsp).*/gm, "").replace('&nbsp', ""),
         })
     }
 };
@@ -191,7 +194,7 @@ export const resetPassword = (token, passwords) => async (dispatch) => {
         console.log(error);
         dispatch({
             type: RESET_PASSWORD_FAIL,
-            payload: error.response.data.error,
+            payload: error.response.data.replace(/<(?:.|\n)*?>/gm, '').replace(/(\r\n|\n|\r)/gm, "").replace(/(?<=\&nbsp).*/gm, "").replace('&nbsp', ""),
         })
     }
 };
@@ -211,7 +214,27 @@ export const loadUser = () => async (dispatch) => {
     } catch (error) {
         dispatch({
             type: LOAD_USER_FAIL,
-            payload: error.response.data.error,
+            payload: error.response.data.replace(/<(?:.|\n)*?>/gm, '').replace(/(\r\n|\n|\r)/gm, "").replace(/(?<=\&nbsp).*/gm, "").replace('&nbsp', ""),
+        })
+    }
+};
+
+// All users by admin 
+export const allUsersByCadmin = () => async (dispatch) => {
+    try {
+        dispatch({ type: ALL_USERS_BY_CADMIN_REQUEST });
+
+        const { data } = await axios.get("/api/v1/cadmin/users");
+
+        dispatch({
+            type: ALL_USERS_BY_CADMIN_SUCESS,
+            payload: data.users,
+        });
+
+    } catch (error) {
+        dispatch({
+            type: ALL_USERS_BY_CADMIN_FAIL,
+            payload: error.response.data.replace(/<(?:.|\n)*?>/gm, '').replace(/(\r\n|\n|\r)/gm, "").replace(/(?<=\&nbsp).*/gm, "").replace('&nbsp', ""),
         })
     }
 };

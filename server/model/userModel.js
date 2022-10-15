@@ -23,6 +23,14 @@ const userSchema = new mongoose.Schema({
         minLength: [8, "Password should be greater than 8 characters"],
         select: false
     },
+    subTasks: [
+        {
+            taskId: {
+                type: mongoose.Schema.ObjectId,
+                ref: "User",
+            }
+        }
+    ],
     club: String,
     createdAt: {
         type: Date,
